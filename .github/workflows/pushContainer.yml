@@ -11,7 +11,7 @@ jobs:
     env:
       REGISTRY_NAME: ${{ containersample }} # {mycontainer}.azurecr.io
       USERNAME: ${{ user3 }}
-      PASSWORD: ${{ Wy1986112761 }}
+      PASSWORD: ${{ Wy19861127 }}
       IMAGE_NAME: sample-django-webapps
     steps:
     - uses: actions/checkout@v2
