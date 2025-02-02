@@ -31,7 +31,6 @@ jobs:
           
       - name: Build and push Docker image
         run: |
-      #DockerビルドとタグにはGitHubのcommit SHAを使用。
-          docker build . -t containersample.azurecr.io/sample-django-webapps:${{ github.sha }}     
-      # ビルドしたイメージをACRにプッシュ。
-          docker push containersample.azurecr.io/sample-django-webapps:${{ github.sha }}
+        docker login ${registry} -u ${username} -p ${password}
+        docker build . -t ${registry}/sampleapp:${GITHUB_REF#refs/heads/}
+        docker push ${registry}/sampleapp:${GITHUB_REF#refs/heads/}
