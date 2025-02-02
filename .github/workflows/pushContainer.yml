@@ -1,21 +1,38 @@
-name: Push Container to Azure ContainerRegistry
+# パイプライン名。GitHub Actionsのタブで一覧表示される時にこの名前が出る
+name: CI to Azure Container Registry
 
+# ワークフローが実行されるトリガー条件。
+# mainブランチへのpushしたときに発動させてる
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [main]
 
+# ジョブの定義。ビルドとプッシュを一つのジョブで実行させる
 jobs:
   build:
+    # 実行環境はUbuntuを指定
     runs-on: ubuntu-latest
-    env:
-      REGISTRY_NAME: ${{ secrets.REGISTRY_NAME }} # {mycontainer}.azurecr.io
-      USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-      PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
-      IMAGE_NAME: sample-django-webapps
     steps:
-    - uses: actions/checkout@v2
-    - run: |
-        docker login ${REGISTRY_NAME} -u ${USERNAME} -p ${PASSWORD}
-        docker build . -t ${REGISTRY_NAME}/${IMAGE_NAME}:${GITHUB_REF#refs/heads/}
-        docker push ${REGISTRY_NAME}/${IMAGE_NAME}:${GITHUB_REF#refs/heads/}
+      # GitHubリポジトリのコードをチェックアウトする
+      # これがないと、リポジトリのコードにアクセスできないエラーでたから要る。
+      - uses: actions/checkout@v3
+        name: Checkout source code
+
+      # Dockerにログインする。ビルドとプッシュ作業の前に必要
+      - name: Log in to Azure Container Registry
+        uses: docker/login-action@v2
+        with:
+          # ACRのドメインを指定。
+          #※AzureでACRを事前に作っておく。↓画像参照
+          registry: containersample.azurecr.io
+          # GitHub Secretsからユーザー名とパスワードを取得。
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      # ここでDockerイメージのビルドとACRへのプッシュする。
+      - name: Build and push Docker image
+        run: |
+      #DockerビルドとタグにはGitHubのcommit SHAを使用。
+          docker build . -t containersample.azurecr.io/sample-django-webapps:${{ github.sha }}     
+      # ビルドしたイメージをACRにプッシュ。
+          docker push containersample.azurecr.io/sample-django-webapps:${{ github.sha }}
