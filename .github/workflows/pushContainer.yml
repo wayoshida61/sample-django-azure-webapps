@@ -28,6 +28,6 @@ jobs:
         uses: docker/login-action@v2
         
         run: | 
-        docker login ${REGISTRY_NAME} -u ${USERNAME} -p ${PASSWORD}
-        docker build . -t containersample.azurecr.io/sampleapp:${GITHUB_REF#refs/heads/}
+        docker
+        docker build . -t ${REGISTRY_NAME}/sampleapp:${GITHUB_REF#refs/heads/}
         docker push ${registry}/sampleapp:${GITHUB_REF#refs/heads/}
