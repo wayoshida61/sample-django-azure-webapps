@@ -11,11 +11,10 @@ jobs:
     env:
       REGISTRY_NAME: ${{ secrets.containersample.azure.io }} # {mycontainer}.azurecr.io
       USERNAME: ${{ secrets.containersample }}
-      PASSWORD: ${{ secrets.PASSWORD }}
       IMAGE_NAME: sample-django-webapps
     steps:
     - uses: actions/checkout@v2
     - run: |
-        docker login ${REGISTRY_NAME} -u ${USERNAME} -p ${PASSWORD}
+        docker login ${REGISTRY_NAME} -u ${USERNAME} -p "A36z+50wKZRalrg7yliDgrP9BdttGZqF76lTGb8IdB+ACRBp5oO4"
         docker build . -t ${REGISTRY_NAME}/${IMAGE_NAME}:${GITHUB_REF#refs/heads/}
         docker push ${REGISTRY_NAME}/${IMAGE_NAME}:${GITHUB_REF#refs/heads/}
