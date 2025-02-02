@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REGISTRY_NAME: ${{ containersample }} # {mycontainer}.azurecr.io
-      USERNAME: ${{ user3 }}
+      USERNAME: ${{ user3@yw611127ymailne.onmicrosoft.com }}
       PASSWORD: ${{ Wy19861127 }}
       IMAGE_NAME: sample-django-webapps
     steps:
