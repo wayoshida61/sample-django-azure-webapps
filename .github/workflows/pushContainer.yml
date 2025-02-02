@@ -24,7 +24,7 @@ jobs:
         with:
           # ACRのドメインを指定。
           #※AzureでACRを事前に作っておく。↓画像参照
-          registry: <レジストリ名>.azurecr.io
+          registry: containersample.azurecr.io
           # GitHub Secretsからユーザー名とパスワードを取得。
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
@@ -33,6 +33,6 @@ jobs:
       - name: Build and push Docker image
         run: |
       #DockerビルドとタグにはGitHubのcommit SHAを使用。
-          docker build . -t <レジストリ名>.azurecr.io/<アプリ名>:${{ github.sha }}     
+          docker build . -t containersample.azurecr.io/sampleapps:${{ github.sha }}     
       # ビルドしたイメージをACRにプッシュ。
           docker push <レジストリ名>.azurecr.io/<アプリ名>:${{ github.sha }}
