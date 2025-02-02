@@ -28,8 +28,7 @@ jobs:
           # GitHub Secretsからユーザー名とパスワードを取得。
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-
-      # ここでDockerイメージのビルドとACRへのプッシュする。
+          
       - name: Build and push Docker image
         run: |
       #DockerビルドとタグにはGitHubのcommit SHAを使用。
